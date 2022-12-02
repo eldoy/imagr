@@ -1,8 +1,6 @@
 const { exist, tree } = require('extras')
 const sharp = require('sharp')
 
-const dir = process.argv[2]
-
 function exit(message) {
   if (message) {
     console.log(`\n${message}`)
@@ -11,14 +9,16 @@ function exit(message) {
   process.exit(0)
 }
 
-if (!dir) {
-  exit('* Error: dir name missing')
+module.exports = function imagr(opt = {}) {
+  const { dir } = opt
+  if (!dir) {
+    exit('* Error: dir name missing')
+  }
+
+  if (!exist(dir)) {
+    exit('* Error: dir does not exist')
+  }
+
+  const files = tree(dir)
+  console.log(files)
 }
-
-if (!exist(dir)) {
-  exit('* Error: dir does not exist')
-}
-
-const files = tree(dir)
-
-console.log(files)

@@ -3,9 +3,12 @@
   "version": "0.1.0",
   "description": "Analyze and convert images optimized for the web.",
   "main": "index.js",
+  "bin": {
+    "imagr": "bin/imagr.js"
+  },
   "scripts": {
     "test": "jest --watch",
-    "dev": "nodemon index.js test/files"
+    "dev": "nodemon bin/imagr.js test/files"
   },
   "repository": {
     "type": "git",
