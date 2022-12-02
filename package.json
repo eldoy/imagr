@@ -4,12 +4,17 @@
   "description": "Analyze and convert images optimized for the web.",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "dev": "nodemon index.js test/files"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/eldoy/libinit"
   },
   "author": "Vidar Eldøy <vidar@eldoy.com>",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "extras": "^0.10.6",
+    "sharp": "^0.31.2"
+  }
 }
