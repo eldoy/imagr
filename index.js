@@ -37,16 +37,7 @@ try {
   console.log(e.message)
 }
 
-module.exports = async function imagr(opt = {}) {
-  const { dir } = opt
-  if (!dir) {
-    exit('* Error: dir name missing', true)
-  }
-
-  if (!extras.exist(dir)) {
-    exit('* Error: dir does not exist', true)
-  }
-
+async function convert(opt = {}) {
   const files = config.files || []
 
   for (let i = 0; i < files.length; i++) {
@@ -140,14 +131,31 @@ module.exports = async function imagr(opt = {}) {
   }
 }
 
-// FEATURE:
-// Can use this for generating config file:
-// const files = extras.tree(dir)
-// console.log(files)
+// TODO: Implement
+function generate(opt = {}) {
+  console.log('Not implemented!')
+  return
 
-// for (const file of files) {
-//   const [base, ext] = extras.basext(file)
-//   console.log(base, ext)
+  // const { dir } = opt
+  // if (!dir) {
+  //   exit('* Error: dir name missing', true)
+  // }
 
-//   if (!TYPES.includes(ext)) continue
-// }
+  // if (!extras.exist(dir)) {
+  //   exit('* Error: dir does not exist', true)
+  // }
+
+  // FEATURE:
+  // Can use this for generating config file:
+  // const files = extras.tree(dir)
+  // console.log(files)
+
+  // for (const file of files) {
+  //   const [base, ext] = extras.basext(file)
+  //   console.log(base, ext)
+
+  //   if (!TYPES.includes(ext)) continue
+  // }
+}
+
+module.exports = { convert, generate }
