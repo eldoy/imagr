@@ -98,7 +98,7 @@ async function convert(opt = {}) {
 
     // Create versions
     const versions = file.versions || []
-    for (let j = 0; j < files.length; j++) {
+    for (let j = 0; j < versions.length; j++) {
       const version = versions[j]
       const { name, size } = version
       const data = []
