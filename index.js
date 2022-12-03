@@ -28,11 +28,13 @@ function exit(message, usage) {
 let config = {}
 
 try {
-  config = extras.read('app/config/imagr.yml')
-} catch (e) {}
+  config = extras.read('imagr.yml')
+} catch (e) {
+  console.log(e.message)
+}
 
 try {
-  config = extras.read('imagr.yml')
+  config = extras.read('app/config/imagr.yml')
 } catch (e) {
   console.log(e.message)
 }
