@@ -1,0 +1,8 @@
+files:
+  - name: some_file_name
+    src: test/files/eldoy-logo.jpg
+    to: app/assets/img/file_name.webp
+    versions:
+      - large: 600x1200
+      - medium: 400x800
+      - thumb: 200x300
