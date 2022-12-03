@@ -1,3 +1,6 @@
+# Lib specific
+app
+
 # Logs
 logs
 *.log

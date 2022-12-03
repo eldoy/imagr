@@ -1,15 +1,17 @@
 const path = require('path')
 const extras = require('extras')
 const sharp = require('sharp')
+const readexif = require('exif-reader')
 
 const TYPES = ['bmp', 'gif', 'jpg', 'jpeg', 'png']
+const FORMATS = ['webp']
 
 function exit(message, usage) {
   if (message) {
-    console.info(`\n${message}`)
+    console.log(`\n${message}`)
   }
   if (usage) {
-    console.info('\nUsage: imagr <dir/name>\n')
+    console.log('\nUsage: imagr <dir/name>\n')
   }
   process.exit(1)
 }
@@ -32,12 +34,10 @@ try {
 try {
   config = extras.read('imagr.yml')
 } catch (e) {
-  console.info(e.message)
+  console.log(e.message)
 }
 
-console.info(JSON.stringify(config, null, 2))
-
-module.exports = function imagr(opt = {}) {
+module.exports = async function imagr(opt = {}) {
   const { dir } = opt
   if (!dir) {
     exit('* Error: dir name missing', true)
@@ -60,7 +60,7 @@ module.exports = function imagr(opt = {}) {
     if (!to) fields.push('to')
     if (fields.length) {
       const text = file.name || `number ${i + 1}`
-      console.info(
+      console.log(
         `File ${text} is missing ${fields.join(' and ')}, skipping...`
       )
       continue
@@ -68,46 +68,86 @@ module.exports = function imagr(opt = {}) {
 
     // Check if file exists
     if (!extras.exist(file.src)) {
-      console.info(`${file.src} does not exist, skipping...`)
+      console.log(`${file.src} does not exist, skipping...`)
       continue
     }
 
-    const name = file.name || file.src
-
-    // Check if it's the correct type
+    // Check if src is the correct type
     const [basesrc, extsrc] = extras.basext(file.src)
-    console.info({ basesrc, extsrc })
     if (!TYPES.includes(extsrc)) {
-      console.info(`${name}: type ${extsrc} not supported, skipping...`)
+      console.log(`${file.src}: type ${extsrc} not supported, skipping...`)
+      continue
+    }
+
+    // Check if to is the correct type
+    const [baseto, extto] = extras.basext(file.to)
+    if (!FORMATS.includes(extto)) {
+      console.log(`${file.to}: type ${extto} not supported, skipping...`)
       continue
     }
 
     // OPTIMIZE: Candidate for extras.pathname(file) function
     // Create dir if it doesn't exist
-    const pathname = file.src.split(path.sep).slice(0, -1).join(path.sep)
-    console.log(pathname)
-    if (!extras.exist(pathname)) {
-      console.log(`Creating directory ${pathname}`)
-      extras.mkdir(pathname)
+    const topath = file.to.split(path.sep).slice(0, -1).join(path.sep)
+    if (!extras.exist(topath)) {
+      console.log(`Creating directory ${topath}`)
+      extras.mkdir(topath)
     }
 
-    // const basename = path.basename(file.source)
+    // Convert file
+    const srcpath = extras.resolve(file.src)
+    console.log(`Converting ${file.src} to ${file.to}`)
+    try {
+      await sharp(file.src).toFile(file.to)
+    } catch (e) {
+      console.error(e.message)
+    }
 
-    // console.log({ basename })
+    // Create versions
+    const versions = file.versions || []
+    for (let j = 0; j < files.length; j++) {
+      const version = versions[j]
+      const { name, size } = version
+      const data = []
+      if (!name) data.push('name')
+      if (!size) data.push('size')
+      if (data.length) {
+        console.log(`Version is missing ${data.join(' and ')}`)
+        continue
+      }
 
-    // const [baseTo, extTo] = extras.basext(file.to)
+      // Build version name
+      const versionname = `${topath}${path.sep}${baseto}-${name}@${size}.${extto}`
+      console.log(`Creating ${versionname}`)
 
-    // if (!TYPES.includes(ext)) continue
+      // Find dimensions
+      const dimensions = size.split('x').map((x) => parseInt(x.trim()))
+
+      try {
+        await sharp(file.src)
+          .resize(...dimensions)
+          .toFile(versionname)
+      } catch (e) {
+        console.error(e.message)
+      }
+    }
+
+    // READ METADATA:
+    // const info = await sharp(srcpath).metadata()
+    // const exif = readexif(info.exif)
+    // console.log(exif)
+    // await extras.sleep(2)
   }
 }
 
+// FEATURE:
 // Can use this for generating config file:
 // const files = extras.tree(dir)
-// console.info(files)
+// console.log(files)
 
 // for (const file of files) {
 //   const [base, ext] = extras.basext(file)
-//   console.info(base, ext)
+//   console.log(base, ext)
 
 //   if (!TYPES.includes(ext)) continue
 // }
