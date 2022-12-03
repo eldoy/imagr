@@ -4,7 +4,7 @@ Analyze and convert images.
 
 Made to be used for finding and converting sub-optimal images into optimal images for the web.
 
-Features:
+**Features:**
 
 * Convert bmp, gif, jpg and png images to webp
 * Create resized versions of original image
