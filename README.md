@@ -21,7 +21,7 @@ Install an config file in `imagr.yml` or `app/config/imagr.yml`:
 ```yml
 files:
   - name: some_file_name
-    src: test/files/eldoy-logo.jpg
+    src: tests/files/eldoy-logo.jpg
     to: app/assets/img/eldoy-logo.webp
     versions:
       - name: large

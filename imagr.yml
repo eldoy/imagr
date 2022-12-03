@@ -1,6 +1,6 @@
 files:
-  - name: some_file_name
-    src: test/files/eldoy-logo.jpg
+  - name: some-image-identifier
+    src: tests/files/eldoy-logo.jpg
     to: app/assets/img/eldoy-logo.webp
     versions:
       - name: large

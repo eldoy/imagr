@@ -7,12 +7,11 @@
     "imagr": "bin/imagr.js"
   },
   "scripts": {
-    "test": "jest --watch",
-    "dev": "nodemon bin/imagr.js test/files"
+    "test": "jest --watch"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/eldoy/libinit"
+    "url": "https://github.com/eldoy/imagr.git"
   },
   "author": "Vidar Eldøy <vidar@eldoy.com>",
   "license": "ISC",
