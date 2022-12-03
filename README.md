@@ -17,6 +17,8 @@ npm i -g imagr
 
 ### Usage
 
+#### From the command line
+
 Install an config file in `imagr.yml` or `app/config/imagr.yml`:
 ```yml
 files:
@@ -35,6 +37,24 @@ files:
 Then run:
 ```
 imagr convert
+```
+
+#### Programmatically
+
+You can use `imagr` from your application.
+
+First install with:
+```
+npm i imagr
+```
+
+Then use it:
+```js
+// Require it
+const imagr = require('imagr')
+
+// Convert images
+await imagr.convert()
 ```
 
 ISC Licensed. Enjoy!
